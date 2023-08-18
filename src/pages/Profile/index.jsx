@@ -19,6 +19,7 @@ export function Profile() {
      
      const { user, updateProfile } = useAuth();
 
+
      const [name, setName] = useState(user.name);
      const [email, setEmail] = useState(user.email);
      const [passwordOld, setPasswordOld] = useState();

@@ -10,15 +10,14 @@ function AuthProvider({ children }) {
   //o useState preserva os dados entre as renderizações
   const [data, setData] = useState({});
   
-
+  
   async function signIn({ email, password }) {
     try {
       const response = await api.post("/sessions", { email, password })
-
+      
       // data é uma propriedade de axios
       const { user, token } = response.data;
-
-
+ 
       //localStorage armazena os dado no navegador do usuario
       // setItem função do localStorage recebe chave e valor
       // precisa transformar o Objeto vindo atravez do JSON em um texto (.stringify)
