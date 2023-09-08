@@ -14,7 +14,10 @@ export const Container = styled.div`
     "brand header"
     "menu search"
     "menu content"
-    "newnote content";
+    "newnote content"
+    "newCar content";
+    
+    
 
   background-color: ${({ theme }) => theme.COLORS.BACKGROUND_800};
 `;
@@ -41,12 +44,14 @@ export const Brand = styled.div`
 
 export const Menu = styled.ul`
   grid-area: menu;
+  
   background: ${({theme})=>theme.COLORS.BACKGROUND_900};
 
   padding-top: 64px;
   text-align: center;
 
   > li{
+    
      margin-bottom: 24px;
   }
 `;
@@ -79,4 +84,16 @@ export const NewNote = styled(Link)`
      margin-right: 8px;
   }
   
+`;
+export const NewCar = styled(Link)`
+  grid-area: newCar;
+  background-color: #111120;
+  color: white;
+ 
+
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 `;

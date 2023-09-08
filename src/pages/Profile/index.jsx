@@ -16,7 +16,7 @@ import { Button } from '../../components/Button';
 
 
 export function Profile() {
-     
+
      const { user, updateProfile } = useAuth();
 
 
@@ -39,17 +39,21 @@ export function Profile() {
           }
           const userUpdated = Object.assign(user, updated)
 
-          await updateProfile({ user:userUpdated, avatarFile })
-    
+          await updateProfile({ user: userUpdated, avatarFile })
+
+
      }
 
 
-     function handleChangeAvatar(event){
+     function handleChangeAvatar(event) {
           const file = event.target.files[0];
           setAvatarFile(file);
 
           const imagePreview = URL.createObjectURL(file);
           setAvatar(imagePreview);
+
+
+          console.log("erro")
      }
 
 

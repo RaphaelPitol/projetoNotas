@@ -93,7 +93,7 @@ function AuthProvider({ children }) {
   useEffect(() => {
     const token = localStorage.getItem("@blocoDeNotas:token");
     const user = localStorage.getItem("@blocoDeNotas:user");
-    
+  
 
     if (token && user) {
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;

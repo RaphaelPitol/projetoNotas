@@ -1,8 +1,8 @@
 import { FiPlus, FiSearch } from "react-icons/fi";
-import { Container, Brand, Menu, Search, Content, NewNote } from "./styles";
+import { Container, Brand, Menu, Search, Content, NewNote, NewCar } from "./styles";
 import { useState, useEffect } from "react";
 import { api } from "../../service/api";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import { Input } from "../../components/Input";
 import { Note } from "../../components/Note";
@@ -15,6 +15,8 @@ export function Home() {
   const [tags, setTags] = useState([]);
   const [tagsSelected, setTagsSelected] = useState([]);
   const [notes, setNotes] = useState([]);
+
+  console.log(tags)
 
   const navigate = useNavigate();
 
@@ -44,6 +46,7 @@ export function Home() {
       const response = await api.get('/tags');
       setTags(response.data);
     }
+    
     fetchTags()
   }, [])
 
@@ -79,7 +82,6 @@ export function Home() {
                   title={tag.name}
                   isActive={tagsSelected.includes(tag.name)}
                   onClick={() => handleTagSelected(tag.name)}
-
                 />
               </li>
             ))
@@ -107,6 +109,9 @@ export function Home() {
           }
         </Section>
       </Content>
+     <NewCar 
+      to="/cars">Cars</NewCar>
+      
 
       <NewNote to="/new">
         <FiPlus></FiPlus>
