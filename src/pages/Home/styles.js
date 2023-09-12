@@ -49,7 +49,7 @@ export const Menu = styled.ul`
 
   padding-top: 64px;
   text-align: center;
-
+  height: 67vh;
   > li{
     
      margin-bottom: 24px;
@@ -87,11 +87,11 @@ export const NewNote = styled(Link)`
 `;
 export const NewCar = styled(Link)`
   grid-area: newCar;
-  background-color: #111120;
+  background-color: #112233;
   color: white;
  
 
-  height: 70px;
+  height: 64px;
   display: flex;
   align-items: center;
   justify-content: center;

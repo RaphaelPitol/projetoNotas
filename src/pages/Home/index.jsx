@@ -16,7 +16,7 @@ export function Home() {
   const [tagsSelected, setTagsSelected] = useState([]);
   const [notes, setNotes] = useState([]);
 
-  console.log(tags)
+
 
   const navigate = useNavigate();
 

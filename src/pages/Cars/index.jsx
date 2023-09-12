@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 import { FiArrowLeft } from 'react-icons/fi'
-import { useState } from "react"
+import { useEffect, useState } from "react"
 
 
 import { api } from "../../service/api";
@@ -15,17 +15,26 @@ export function Cars() {
     const [nome, setNome] = useState("")
     const [marca, setMarca] = useState("")
     const [ano_fabricacao, setData] = useState("")
+    const [user, setUser] = useState([])
+    const [userId, setUserId] = useState("")
 
     function createCar() {
-
-       
-        if (!nome || !marca || !ano_fabricacao) {
+        if (!nome || !marca || !ano_fabricacao || !userId) {
             return alert("Preencha todos os Campos!")
         }
-        api.post("/cars", { nome, marca, ano_fabricacao })
+        api.post("/cars", { nome, marca, ano_fabricacao, user_id: userId })
         alert("Gravado com sucesso!")
 
     }
+
+    useEffect(() => {
+        async function listUsers() {
+            const response = await api.get('/users')
+            setUser(response.data)
+
+        }
+        listUsers()
+    }, [])
 
     return (
         <Container>
@@ -38,27 +47,22 @@ export function Cars() {
                     marginTop: 50,
                 }}
             >Cadastro de Carros</h1>
-            
+
 
             <div
-                style={{
-                    color: "white",
-                    fontSize: 30,
-                    display: 'flex',
-                    justifyContent: "space-between"
-                }}
+
             >
-            <Link to="/"
-                style={{
-                    color: "white" 
-                }}
-            > <FiArrowLeft /></Link>
-            <Link to="/lista"
-            style={{
-                    color: "white" 
-                }}
-            >Listar</Link>
-            
+                <Link to="/"
+                    style={{
+                        color: "white"
+                    }}
+                > <FiArrowLeft /></Link>
+                <Link to="/lista"
+                    style={{
+                        color: "white"
+                    }}
+                >Listar</Link>
+
             </div>
 
             <Form>
@@ -77,6 +81,22 @@ export function Cars() {
                     type="number"
                     onChange={e => setData(e.target.value)}
                 />
+                <select
+                    value={userId}
+                    onChange={e => setUserId(e.target.value)}
+                >
+                    <option value="">Proprietario...</option>
+                    {
+                        user.map(users => (
+                            <option
+                                key={String(users.id)}
+                                value={users.id}
+                            >{users.name}</option>
+                        ))
+
+                    }
+
+                </select>
 
                 <button onClick={createCar}>Gravar</button>
             </Form>

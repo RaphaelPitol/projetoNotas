@@ -1,4 +1,5 @@
-
+import { Link } from "react-router-dom"
+import { FiArrowLeft } from 'react-icons/fi'
 import { Header } from "../../components/Header";
 import { Table } from "./styles";
 import { useState, useEffect } from "react";
@@ -15,21 +16,36 @@ export function ListarCars() {
         }
         listCars()
     }, [])
-    console.log(cars)
+
     return (
 
         <>
             <Header />
 
-            <Table>
 
-                <table
+                <div
                 style={{
-                    fontSize: 20,
-                    background:" #303030",
-                    
+                    display: 'flex',
+                    width: 100,
+                    marginLeft: 150,
+                    fontSize: 30,
+                    marginTop:30
                 }}
                 >
+                <Link to="/cars"
+                    style={{
+                        color: "white"
+                    }}
+                > <FiArrowLeft /></Link>
+                </div>
+                <h1
+                style={{
+                    textAlign: 'center'
+                }}
+                >
+                Lista de Carros</h1>
+            <Table>
+                <table>
 
                     <tr>
                         <td>Nome</td>
