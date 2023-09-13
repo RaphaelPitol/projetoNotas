@@ -18,6 +18,21 @@ export const Table = styled.div`
     font-size: 20px;
     width: 100%;
     background: #303030;
+
+  }
+  .edit{
+    color: #005555;
+    background: none;
+    border: none;
+    margin-right: 5px;
+    font-size: 1.5rem;
+  }
+  .delete{
+    background: none;
+    border: none;
+    color: #880000;
+    margin-left: 5px;
+    font-size: 1.5rem;
   }
   
 `;

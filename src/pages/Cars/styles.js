@@ -16,15 +16,23 @@ export const Form = styled.form`
   flex-direction: column;
   margin: 50px auto;
   > label {
-    margin-bottom: 5px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
     font-size: 1.5rem;
+    > input {
+      padding-left: 10px;
+      height: 50px;
+      border-radius: 10px;
+      border: none;
+      font-size: 1.5rem;
+    }
+    >span {
+    color: red;
+    margin-top: 79px;
+    font-size: 16px;
+    position: absolute;
   }
-  > input {
-    padding-left: 10px;
-    height: 50px;
-    border-radius: 10px;
-    border: none;
-    font-size: 1.5rem;
   }
   > select {
     margin-top: 10px;
@@ -44,4 +52,5 @@ export const Form = styled.form`
     background: orange;
     font-size: 1.2rem;
   }
+  
 `;

@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom"
 import { FiArrowLeft } from 'react-icons/fi'
 import { useEffect, useState } from "react"
+import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup";
+import Swal from 'sweetalert2'
 
 
 import { api } from "../../service/api";
@@ -18,14 +22,37 @@ export function Cars() {
     const [user, setUser] = useState([])
     const [userId, setUserId] = useState("")
 
-    function createCar() {
-        if (!nome || !marca || !ano_fabricacao || !userId) {
-            return alert("Preencha todos os Campos!")
-        }
-        api.post("/cars", { nome, marca, ano_fabricacao, user_id: userId })
-        alert("Gravado com sucesso!")
 
-    }
+    const schema = yup.object({
+        nome: yup.string().required("Nome é obrigatório!"),
+        marca: yup.string().required("Marca é obrigatória!"),
+        ano_fabricacao: yup.number().positive("Informe um numero positivo")
+        .integer().required("Informe o ano de fabricação"),
+        proprietario: yup.number().integer().required(),
+    }).required();
+
+    const { register, handleSubmit, watch, formState: { errors } } = useForm({
+        resolver: yupResolver(schema)
+    })
+
+
+     function createCar() {
+    //     if (!nome || !marca || !ano_fabricacao || !userId) {
+    //         return Swal.fire({
+    //             icon: 'error',
+    //             title: 'Oops...',
+    //             text: 'Preencha todos os campos!',
+    //             footer: '<a href="">Quer prosseguir?</a>'
+    //           })
+    //     }
+         api.post("/cars", { nome, marca, ano_fabricacao, user_id: userId })
+          alert("Gravado com sucesso!")
+
+     }
+
+    const onSubmit = data => console.log(data)
+    console.log(errors)
+
 
     useEffect(() => {
         async function listUsers() {
@@ -65,24 +92,35 @@ export function Cars() {
 
             </div>
 
-            <Form>
-                <label htmlFor="">Nome</label>
+            <Form onSubmit={handleSubmit(createCar)}>
+                <label htmlFor="">Nome
+                    <input
+                        type="text"
+                        {...register("nome")}
+                        onChange={e => setNome(e.target.value)}
+                    />
+                    <span>{errors.nome?.message}</span>
+                </label>
+                <label htmlFor="">Marca
                 <input
                     type="text"
-                    onChange={e => setNome(e.target.value)}
-                />
-                <label htmlFor="">Marca</label>
-                <input
-                    type="text"
+                    {...register("marca")}
                     onChange={e => setMarca(e.target.value)}
                 />
-                <label htmlFor="">Ano</label>
+                    <span>{errors.marca?.message}</span>
+                </label>
+                <label htmlFor="">Ano
                 <input
                     type="number"
+                    defaultValue={'0000'}
+                    {...register("ano_fabricacao")}
                     onChange={e => setData(e.target.value)}
                 />
+                    <span>{errors.ano_fabricacao?.message}</span>
+                </label>
                 <select
                     value={userId}
+                    {...register("proprietario")}
                     onChange={e => setUserId(e.target.value)}
                 >
                     <option value="">Proprietario...</option>
@@ -98,7 +136,7 @@ export function Cars() {
 
                 </select>
 
-                <button onClick={createCar}>Gravar</button>
+                <button>Gravar</button>
             </Form>
         </Container>
     )
