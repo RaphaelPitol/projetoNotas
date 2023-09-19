@@ -1,38 +1,33 @@
 import { Link } from "react-router-dom"
-import { useNavigate } from "react-router-dom";
 import { FiArrowLeft } from 'react-icons/fi'
 import { AiFillEdit, AiFillDelete } from 'react-icons/ai'
 import { Header } from "../../components/Header";
 import { Table } from "./styles";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { api } from "../../service/api";
 
 export function ListarCars() {
-   const navigate = useNavigate()
     const [cars, setCars] = useState([])
-   
 
-  
-
-    useEffect(() => {
-        async function listCars() {
+    const listCars = useCallback(() => {
+        async function request() {
             const response = await api.get('/cars');
             setCars(response.data);
         }
-        listCars()
+
+        request()
+
     }, [])
 
-
-    function handleBack() {
-        alert("Deletado")
-        navigate("/cars") 
-    }
+    useEffect(() => {
+        listCars()
+    }, [])
 
     async function handleRemoveCar(id) {
         const confirm = window.confirm('Deseja realmente Excluir?')
         if (confirm) {
             await api.delete(`/cars/${id}`);
-            handleBack()
+            listCars()
         }
     }
 
@@ -64,9 +59,9 @@ export function ListarCars() {
             >
                 Lista de Carros</h1>
             <Table>
-                
-                    <table>
 
+                <table>
+                    <tbody>
                         <tr>
                             <td>Nome</td>
                             <td>Marca</td>
@@ -83,16 +78,25 @@ export function ListarCars() {
                                     <td>{car.ano_fabricacao}</td>
                                     <td>{car.name}</td>
                                     <td>
-                                        <button className="edit"><AiFillEdit /></button>
-                                        <button onClick={()=>handleRemoveCar(car.id)}  className="delete"><AiFillDelete /></button>
+
+                                        <Link to={`/cars/${car.id}`} className="edit"
+                                        >
+                                            <AiFillEdit />
+                                        </Link>
+
+                                        <button
+                                            onClick={() => handleRemoveCar(car.id)}
+                                            className="delete">
+                                            <AiFillDelete />
+                                        </button>
                                     </td>
                                 </tr>
                             ))
-                        
-                        }
 
-                    </table>
-                
+                        }
+                    </tbody>
+                </table>
+
             </Table>
 
         </>

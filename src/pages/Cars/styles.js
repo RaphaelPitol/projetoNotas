@@ -14,7 +14,7 @@ export const Form = styled.form`
   width: 300px;
   display: flex;
   flex-direction: column;
-  margin: 50px auto;
+  margin: 10px auto;
   > label {
     display: flex;
     flex-direction: column;
@@ -41,6 +41,7 @@ export const Form = styled.form`
     border-radius: 10px;
     border: none;
     font-size: 1.5rem;
+    
   }
 
   > button {
@@ -52,5 +53,10 @@ export const Form = styled.form`
     background: orange;
     font-size: 1.2rem;
   }
-  
+  > span {
+    color: red;
+    margin-top: 347px;
+    font-size: 16px;
+    position: absolute;
+  }
 `;

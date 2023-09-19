@@ -21,7 +21,7 @@ export const Table = styled.div`
 
   }
   .edit{
-    color: #005555;
+    color: #109999;
     background: none;
     border: none;
     margin-right: 5px;
@@ -30,7 +30,7 @@ export const Table = styled.div`
   .delete{
     background: none;
     border: none;
-    color: #880000;
+    color: #882010;
     margin-left: 5px;
     font-size: 1.5rem;
   }

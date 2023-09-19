@@ -22,7 +22,7 @@ export function Home() {
 
 
   function handleTagSelected(tagName) {
-    if(tagName === "all"){
+    if (tagName === "all") {
       return setTagsSelected([])
     }
 
@@ -46,7 +46,7 @@ export function Home() {
       const response = await api.get('/tags');
       setTags(response.data);
     }
-    
+
     fetchTags()
   }, [])
 
@@ -67,26 +67,26 @@ export function Home() {
       <Header></Header>
 
       <Menu>
-      
-          <li><ButtonText
-            isActive={tagsSelected.length === 0}
-            title="Todos"
-            onClick={() => handleTagSelected('all')}
-          />
-          </li>
 
-          {
-            tags && tags.map(tag => (
-              <li key={String(tag.id)}>
-                <ButtonText
-                  title={tag.name}
-                  isActive={tagsSelected.includes(tag.name)}
-                  onClick={() => handleTagSelected(tag.name)}
-                />
-              </li>
-            ))
-          }
-      
+        <li><ButtonText
+          $isActive={tagsSelected.length === 0}
+          title="Todos"
+          onClick={() => handleTagSelected('all')}
+        />
+        </li>
+
+        {
+          tags && tags.map(tag => (
+            <li key={String(tag.id)}>
+              <ButtonText
+                title={tag.name}
+                $isActive={tagsSelected.includes(tag.name)}
+                onClick={() => handleTagSelected(tag.name)}
+              />
+            </li>
+          ))
+        }
+
       </Menu>
 
       <Search>
@@ -103,15 +103,15 @@ export function Home() {
               <Note
                 key={String(note.id)}
                 data={note}
-                onClick={()=>handleDetails(note.id)}
+                onClick={() => handleDetails(note.id)}
               />
             ))
           }
         </Section>
       </Content>
-     <NewCar 
-      to="/cars">Cars</NewCar>
-      
+      <NewCar
+        to="/cars">Cars</NewCar>
+
 
       <NewNote to="/new">
         <FiPlus></FiPlus>
