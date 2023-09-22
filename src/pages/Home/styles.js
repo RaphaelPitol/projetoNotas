@@ -8,14 +8,15 @@ export const Container = styled.div`
   display: grid;
   grid-template-columns: 250px auto;
 
-  grid-template-rows: 105px 128px auto 64px;
+  grid-template-rows: 105px 128px 290px 217px;
 
   grid-template-areas:
     "brand header"
     "menu search"
-    "menu content"
-    "newnote content"
-    "newCar content";
+    "menu content";
+    /* "newnote content"
+    "newBut content"
+    "newButEnd content"; */
     
     
 
@@ -49,7 +50,7 @@ export const Menu = styled.ul`
 
   padding-top: 64px;
   text-align: center;
-  height: 67vh;
+  height: 60vh;
   > li{
     
      margin-bottom: 24px;
@@ -71,23 +72,41 @@ export const Content = styled.div`
 `;
 
 export const NewNote = styled(Link)`
-  grid-area: newnote;
+  /* grid-area: newnote; */
   background-color: ${({theme})=>theme.COLORS.ORANGE};
   color: ${({theme})=>theme.COLORS.BACKGROUND_900};
- 
+/*  
 
   display: flex;
   align-items: center;
+  justify-content: center; */
+
+  height: 64px;
+  display: flex;
+  align-items: center;
   justify-content: center;
+
 
   svg{
      margin-right: 8px;
   }
   
 `;
-export const NewCar = styled(Link)`
-  grid-area: newCar;
+export const NewBut = styled(Link)`
+  /* grid-area: newBut; */
   background-color: #112233;
+  color: white;
+ 
+
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+`;
+export const NewButEnd = styled(Link)`
+  /* grid-area: newButEnd; */
+  background-color: #552233;
   color: white;
  
 

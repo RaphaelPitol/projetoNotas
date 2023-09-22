@@ -23,13 +23,16 @@ export function ListarCars() {
         listCars()
     }, [])
 
-    async function handleRemoveCar(id) {
-        const confirm = window.confirm('Deseja realmente Excluir?')
-        if (confirm) {
-            await api.delete(`/cars/${id}`);
-            listCars()
+    const delet = useCallback((id)=>{
+        async function handleRemoveCar(id) {
+            const confirm = window.confirm('Deseja realmente Excluir?')
+            if (confirm) {
+                await api.delete(`/cars/${id}`);
+                listCars()
+            }
         }
-    }
+        handleRemoveCar(id)
+    },[])
 
     return (
 
@@ -85,7 +88,7 @@ export function ListarCars() {
                                         </Link>
 
                                         <button
-                                            onClick={() => handleRemoveCar(car.id)}
+                                            onClick={() => delet(car.id)}
                                             className="delete">
                                             <AiFillDelete />
                                         </button>

@@ -1,6 +1,6 @@
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { FiArrowLeft } from 'react-icons/fi'
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
@@ -30,58 +30,67 @@ export function Cars() {
         resolver: yupResolver(schema)
     })
 
-    async function up() {
-        const cars = await api.get(`/cars/${id}`)
-        setValue("id", cars.data.id)
-        setValue("nome", cars.data.nome);
-        setValue("marca", cars.data.marca);
-        setValue("ano_fabricacao", cars.data.ano_fabricacao || "0000");
-        setValue("user_id", cars.data.user_id);
+    const update = useCallback(() => {
+        async function up() {
+            const cars = await api.get(`/cars/${id}`)
+            setValue("id", cars.data.id)
+            setValue("nome", cars.data.nome);
+            setValue("marca", cars.data.marca);
+            setValue("ano_fabricacao", cars.data.ano_fabricacao || "0000");
+            setValue("user_id", cars.data.user_id);
+        }
+        up()
 
-    }
+    }, [])
 
-    async function createCar(e) {
-
-        if (!id) {
-            try {
-                await api.post("/cars", e)
+  
+    const create = useCallback((e)=>{
+        async function createCar(e) {
+    
+            if (!id) {
+                try {
+                    await api.post("/cars", e)
+                    Swal.fire(
+                        'Salvo com Sucesso!',
+                        'success'
+                    )
+                    reset()
+                } catch (error) {
+                    if (error.response) {
+                        alert('Erro do servidor:', error.response.data);
+                    } else if (error.request) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Oops...',
+                            text: 'Servidor não respondeu!',
+                            footer: '<a href="">Tente mais tarde!</a>'
+                        })
+                    }
+    
+                }
+            }
+    
+            if (id) {
+                await api.put("/cars", e)
                 Swal.fire(
-                    'Salvo com Sucesso!',
+                    'Editado com Sucesso!',
                     'success'
                 )
-                reset()
-            } catch (error) {
-                if (error.response) {
-                    alert('Erro do servidor:', error.response.data);
-                } else if (error.request) {
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Oops...',
-                        text: 'Servidor não respondeu!',
-                        footer: '<a href="">Tente mais tarde!</a>'
-                    })
-                }
-
+                navigate("/lista")
             }
+    
         }
+        createCar(e)
 
-        if (id) {
-            await api.put("/cars", e)
-            Swal.fire(
-                'Editado com Sucesso!',
-                'success'
-            )
-            navigate("/lista")
-        }
+    },[])
 
-    }
 
 
     useEffect(() => {
         async function listUsers() {
             const response = await api.get('/users')
             setUser(response.data)
-            up()
+            update()
         }
         listUsers()
     }, [])
@@ -115,7 +124,7 @@ export function Cars() {
 
             </div>
 
-            <Form onSubmit={handleSubmit(createCar)}>
+            <Form onSubmit={handleSubmit(create)}>
                 <label htmlFor="">Nome
                     <input
                         type="text"

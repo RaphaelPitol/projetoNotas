@@ -1,5 +1,5 @@
 import { FiPlus, FiSearch } from "react-icons/fi";
-import { Container, Brand, Menu, Search, Content, NewNote, NewCar } from "./styles";
+import { Container, Brand, Menu, Search, Content, NewNote, NewBut, NewButEnd } from "./styles";
 import { useState, useEffect } from "react";
 import { api } from "../../service/api";
 import { useNavigate, Link } from "react-router-dom";
@@ -109,14 +109,23 @@ export function Home() {
           }
         </Section>
       </Content>
-      <NewCar
-        to="/cars">Cars</NewCar>
+      <div>
 
+        <NewBut
+          to="/cars">
+          Cars
+        </NewBut>
 
-      <NewNote to="/new">
-        <FiPlus></FiPlus>
-        Criar Nota
-      </NewNote>
+        <NewButEnd
+          to="/endereco">
+          Endereço
+        </NewButEnd>
+
+        <NewNote to="/new">
+          <FiPlus></FiPlus>
+          Criar Nota
+        </NewNote>
+      </div>
     </Container>
   );
 }

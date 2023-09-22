@@ -6,6 +6,7 @@ import { Details } from '../pages/Datails';
 import { Profile } from '../pages/Profile';
 import {Cars} from '../pages/Cars';
 import { ListarCars } from '../pages/ListarCars';
+import { Endereco } from '../pages/Endereco';
 
 
 export function AppRoutes(){
@@ -17,6 +18,7 @@ export function AppRoutes(){
                <Route path='/details/:id' element={<Details/>}/>
                <Route path='/cars/:id?' element={<Cars/>}/>
                <Route path='/lista' element={<ListarCars/>}/>
+               <Route path='/endereco' element={<Endereco/>}/>
           </Routes>
      )
 
