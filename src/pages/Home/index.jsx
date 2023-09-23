@@ -11,7 +11,7 @@ import {
 } from "./styles";
 import { useState, useEffect } from "react";
 import { api } from "../../service/api";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate} from "react-router-dom";
 
 import { Input } from "../../components/Input";
 import { Note } from "../../components/Note";
@@ -114,7 +114,7 @@ export function Home() {
       </Content>
       <div
         style={{
-          marginTop: -47,
+          marginTop: -115,
         }}
       >
         <NewBut to="/cars">Cars</NewBut>

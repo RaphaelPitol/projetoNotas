@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom"
-import { FiArrowLeft } from 'react-icons/fi'
+import { FiArrowLeft, FiPlus } from 'react-icons/fi'
 import { AiFillEdit, AiFillDelete } from 'react-icons/ai'
 import { Header } from "../../components/Header"
 import { Container } from "./style"
@@ -43,7 +43,7 @@ export function Endereco() {
           <h2
           style={{
                textAlign: 'center',
-               margin: 15
+               margin: 15, 
           }}
           >Lista de endereços</h2>
 
@@ -51,7 +51,9 @@ export function Endereco() {
                style={{
                     display:"flex",
                     margin: 10,
-                    marginLeft: 50,
+                    marginLeft: 100,
+                    marginRight: 100,
+                    justifyContent: "space-between"
 
                }}
                >
@@ -61,6 +63,15 @@ export function Endereco() {
                         fontSize: 32
                     }}
                 > <FiArrowLeft /></Link>
+
+                <Link
+                to="/newEnd"
+                style={{
+                    color: "white",
+                    fontSize: 32
+                }}>
+                <FiPlus></FiPlus>
+                </Link>
                </div>
 
                <Container>

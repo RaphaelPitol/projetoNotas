@@ -50,7 +50,7 @@ export const Menu = styled.ul`
 
   padding-top: 64px;
   text-align: center;
-  height: 60vh;
+  height: 49vh;
   > li{
     
      margin-bottom: 24px;
