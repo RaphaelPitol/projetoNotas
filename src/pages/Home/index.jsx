@@ -1,5 +1,14 @@
 import { FiPlus, FiSearch } from "react-icons/fi";
-import { Container, Brand, Menu, Search, Content, NewNote, NewBut, NewButEnd } from "./styles";
+import {
+  Container,
+  Brand,
+  Menu,
+  Search,
+  Content,
+  NewNote,
+  NewBut,
+  NewButEnd,
+} from "./styles";
 import { useState, useEffect } from "react";
 import { api } from "../../service/api";
 import { useNavigate, Link } from "react-router-dom";
@@ -16,26 +25,21 @@ export function Home() {
   const [tagsSelected, setTagsSelected] = useState([]);
   const [notes, setNotes] = useState([]);
 
-
-
   const navigate = useNavigate();
-
 
   function handleTagSelected(tagName) {
     if (tagName === "all") {
-      return setTagsSelected([])
+      return setTagsSelected([]);
     }
 
-    const alreadySelected = tagsSelected.includes(tagName)
+    const alreadySelected = tagsSelected.includes(tagName);
 
     if (alreadySelected) {
-      const filteredTags = tagsSelected.filter(tag => tag !== tagName);
+      const filteredTags = tagsSelected.filter((tag) => tag !== tagName);
       setTagsSelected(filteredTags);
-
     } else {
-      setTagsSelected(prevState => [...prevState, tagName])
+      setTagsSelected((prevState) => [...prevState, tagName]);
     }
-
   }
   function handleDetails(id) {
     navigate(`/details/${id}`);
@@ -43,20 +47,22 @@ export function Home() {
 
   useEffect(() => {
     async function fetchTags() {
-      const response = await api.get('/tags');
+      const response = await api.get("/tags");
       setTags(response.data);
     }
 
-    fetchTags()
-  }, [])
+    fetchTags();
+  }, []);
 
   useEffect(() => {
     async function fetchNotes() {
-      const response = await api.get(`/notes?title=${search}&tags=${tagsSelected}`);
+      const response = await api.get(
+        `/notes?title=${search}&tags=${tagsSelected}`
+      );
       setNotes(response.data);
     }
     fetchNotes();
-  }, [tagsSelected, search])
+  }, [tagsSelected, search]);
 
   return (
     <Container>
@@ -67,16 +73,16 @@ export function Home() {
       <Header></Header>
 
       <Menu>
-
-        <li><ButtonText
-          $isActive={tagsSelected.length === 0}
-          title="Todos"
-          onClick={() => handleTagSelected('all')}
-        />
+        <li>
+          <ButtonText
+            $isActive={tagsSelected.length === 0}
+            title="Todos"
+            onClick={() => handleTagSelected("all")}
+          />
         </li>
 
-        {
-          tags && tags.map(tag => (
+        {tags &&
+          tags.map((tag) => (
             <li key={String(tag.id)}>
               <ButtonText
                 title={tag.name}
@@ -84,42 +90,36 @@ export function Home() {
                 onClick={() => handleTagSelected(tag.name)}
               />
             </li>
-          ))
-        }
-
+          ))}
       </Menu>
 
       <Search>
         <Input
           placeholder="Pesquisar pelo título"
           onChange={(e) => setSearch(e.target.value)}
-          icon={FiSearch} />
+          icon={FiSearch}
+        />
       </Search>
 
       <Content>
         <Section title="Minhas notas">
-          {
-            notes.map(note => (
-              <Note
-                key={String(note.id)}
-                data={note}
-                onClick={() => handleDetails(note.id)}
-              />
-            ))
-          }
+          {notes.map((note) => (
+            <Note
+              key={String(note.id)}
+              data={note}
+              onClick={() => handleDetails(note.id)}
+            />
+          ))}
         </Section>
       </Content>
-      <div>
+      <div
+        style={{
+          marginTop: -47,
+        }}
+      >
+        <NewBut to="/cars">Cars</NewBut>
 
-        <NewBut
-          to="/cars">
-          Cars
-        </NewBut>
-
-        <NewButEnd
-          to="/endereco">
-          Endereço
-        </NewButEnd>
+        <NewButEnd to="/endereco">Endereço</NewButEnd>
 
         <NewNote to="/new">
           <FiPlus></FiPlus>

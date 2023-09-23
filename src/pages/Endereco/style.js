@@ -20,6 +20,20 @@ border-radius: 10px;
     >tr:nth-child(even){background-color: #f2f2f2}
 }
 
+.edit{
+    color: #109999;
+    background: none;
+    border: none;
+    margin-right: 5px;
+    font-size: 1.5rem;
+  }
+  .delete{
+    background: none;
+    border: none;
+    color: orange;
+    margin-left: 5px;
+    font-size: 1.5rem;
+  }
 
 
 `
