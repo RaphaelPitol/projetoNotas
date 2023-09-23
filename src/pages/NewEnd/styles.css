@@ -1,0 +1,28 @@
+.form{
+     display: flex;
+     flex-direction: column;
+     margin: 10px 500px;
+     
+}
+.form input{
+     font-size: 20px;
+     max-width: 400px;
+     min-width: 100px;
+     border-radius: 5px;
+     border: none;
+}
+.estado{
+     border: none;
+     font-size: 20px;
+     max-width: 100px;
+}
+.user{
+     border: none;
+     font-size: 20px;
+     max-width: 400px;
+}
+#cep{
+     border: none;
+     text-align: center;
+     max-width: 120px;
+}

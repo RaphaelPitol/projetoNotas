@@ -21,17 +21,17 @@ border-radius: 10px;
 }
 
 .edit{
-    color: #109999;
+    color: lightskyblue;
     background: none;
     border: none;
-    margin-right: 5px;
+    margin-right: 10px;
     font-size: 1.5rem;
   }
   .delete{
     background: none;
     border: none;
-    color: orange;
-    margin-left: 5px;
+    color: darkorange;
+    margin-left: 10px;
     font-size: 1.5rem;
   }
 
