@@ -9,55 +9,55 @@ import { useCallback, useEffect, useState } from "react";
 
 export function Endereco() {
 
-     const [endereco, setEndereco] = useState([])
+    const [endereco, setEndereco] = useState([])
 
-     const listEndereco = useCallback(() => {
-          async function request() {
-               const response = await api.get('/endereco')
-               setEndereco(response.data)
-          }
-          request()
-     }, [])
+    const listEndereco = useCallback(() => {
+        async function request() {
+            const response = await api.get('/endereco')
+            setEndereco(response.data)
+        }
+        request()
+    }, [])
 
-     const delet = useCallback((id)=>{
-          async function removEnd(id) {
-              const confirm = window.confirm('Deseja realmente Excluir?')
-              if (confirm) {
-                  await api.delete(`/endereco/${id}`);
-                  listEndereco()
-              }
-          }
-          removEnd(id)
-      },[])
-
-
-     useEffect(() => {
-          listEndereco()
-     }, [])
+    const delet = useCallback((id) => {
+        async function removEnd(id) {
+            const confirm = window.confirm('Deseja realmente Excluir?')
+            if (confirm) {
+                await api.delete(`/endereco/${id}`);
+                listEndereco()
+            }
+        }
+        removEnd(id)
+    }, [])
 
 
-     return (
+    useEffect(() => {
+        listEndereco()
+    }, [])
 
-          <>
-               <Header></Header>
-          <h2
-          style={{
-               textAlign: 'center',
-               margin: 15, 
-          }}
-          >Lista de endereços</h2>
 
-               <div
-               style={{
-                    display:"flex",
+    return (
+
+        <>
+            <Header></Header>
+            <h2
+                style={{
+                    textAlign: 'center',
+                    margin: 15,
+                }}
+            >Lista de endereços</h2>
+
+            <div
+                style={{
+                    display: "flex",
                     margin: 10,
                     marginLeft: 100,
                     marginRight: 100,
                     justifyContent: "space-between"
 
-               }}
-               >
-               <Link to="/"
+                }}
+            >
+                <Link to="/"
                     style={{
                         color: "white",
                         fontSize: 32
@@ -65,44 +65,49 @@ export function Endereco() {
                 > <FiArrowLeft /></Link>
 
                 <Link
-                to="/newEnd"
-                style={{
-                    color: "white",
-                    fontSize: 32
-                }}>
-                <FiPlus></FiPlus>
+                    to="/newEnd"
+                    style={{
+                        color: "white",
+                        fontSize: 32
+                    }}>
+                    <FiPlus></FiPlus>
                 </Link>
-               </div>
+            </div>
 
-               <Container>
+            <Container>
 
 
-                    <table>
-                         <tr>
-                              <th>Endereço</th>
-                              <th>Bairro</th>
-                              <th>Numero</th>
-                              <th>Cidade</th>
-                              <th>Complemento</th>
-                              <th>Cep</th>
-                              <th>Estado</th>
-                              <th>Nome</th>
-                              <th>Ações</th>
-                         </tr>
-                         {
-                              endereco.map(end => (
-                                   <tr key={String(end.id)}>
-                                        <td>{end.nomeEnd}</td>
-                                        <td>{end.bairro}</td>
-                                        <td>{end.numero}</td>
-                                        <td>{end.cidade}</td>
-                                        <td>{end.complemento}</td>
-                                        <td>{end.cep}</td>
-                                        <td>{end.estado}</td>
-                                        <td>{end.name}</td>
-                                        <td>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Endereço</th>
+                            <th>Bairro</th>
+                            <th>Numero</th>
+                            <th>Cidade</th>
+                            <th>Complemento</th>
+                            <th>Cep</th>
+                            <th>Estado</th>
+                            <th>Nome</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                                        <Link to="" className="edit"
+
+                        {
+                            endereco.map(end => (
+                                <tr key={String(end.id)}>
+                                    <td>{end.nomeEnd}</td>
+                                    <td>{end.bairro}</td>
+                                    <td>{end.numero}</td>
+                                    <td>{end.cidade}</td>
+                                    <td>{end.complemento}</td>
+                                    <td>{end.cep}</td>
+                                    <td>{end.estado}</td>
+                                    <td>{end.name}</td>
+                                    <td>
+
+                                        <Link to={`/newEnd/${end.id}`} className="edit"
                                         >
                                             <AiFillEdit />
                                         </Link>
@@ -113,12 +118,12 @@ export function Endereco() {
                                             <AiFillDelete />
                                         </button>
                                     </td>
-                                   </tr>
-                              ))
-                         }
-
-                    </table>
-               </Container>
-          </>
-     )
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
+            </Container>
+        </>
+    )
 }

@@ -1,28 +1,51 @@
-.form{
-     display: flex;
-     flex-direction: column;
-     margin: 10px 500px;
-     
+.form {
+    display: flex;
+    flex-direction: column;
+    width: 450px;
+    border-radius: 5px;
 }
-.form input{
-     font-size: 20px;
-     max-width: 400px;
-     min-width: 100px;
-     border-radius: 5px;
-     border: none;
+
+.form label:nth-of-type(n + 2) {
+    margin-top: 20px; /* ou a quantidade desejada */
 }
-.estado{
-     border: none;
-     font-size: 20px;
-     max-width: 100px;
+.form input {
+    font-size: 20px;
+    max-width: 450px;
+    min-width: 100px;
+    border-radius: 5px;
+    border: none;
 }
-.user{
-     border: none;
-     font-size: 20px;
-     max-width: 400px;
+.estado {
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    max-width: 100px;
 }
-#cep{
-     border: none;
-     text-align: center;
-     max-width: 120px;
+.user {
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    max-width: 450px;
+}
+#cep {
+    border-radius: 5px;
+    border: none;
+    text-align: center;
+    max-width: 140px;
+}
+button {
+    max-width: 130px;
+    max-height: 40px;
+}
+.divForm {
+    display: flex;
+    align-items: center;
+    margin: 10px auto;
+    justify-content: space-around;
+}
+
+.divButton {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
 }

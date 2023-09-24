@@ -46,7 +46,7 @@ function AuthProvider({ children }) {
       showCancelButton: true,
       confirmButtonColor: '#3085d6',
       cancelButtonColor: '#d33',
-      confirmButtonText: 'Sim, quero sair!',
+      confirmButtonText: 'Sair!',
       cancelButtonText: 'Cancelar'
 
     }).then((response) => {

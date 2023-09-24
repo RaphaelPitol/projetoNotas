@@ -20,7 +20,7 @@ export function AppRoutes(){
                <Route path='/cars/:id?' element={<Cars/>}/>
                <Route path='/lista' element={<ListarCars/>}/>
                <Route path='/endereco' element={<Endereco/>}/>
-               <Route path='/newEnd' element={<NewEnd/>}/>
+               <Route path='/newEnd/:id?' element={<NewEnd/>}/>
           </Routes>
      )
 

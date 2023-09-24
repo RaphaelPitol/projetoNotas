@@ -114,7 +114,7 @@ export function Home() {
       </Content>
       <div
         style={{
-          marginTop: -115,
+          marginTop: 0,
         }}
       >
         <NewBut to="/cars">Cars</NewBut>
