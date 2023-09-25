@@ -27,10 +27,10 @@ export function NewEnd() {
             .required("Informe o numero").positive("Informe o numero Positivo"),
         cidade: yup.string().required("Cidade é obrigatória!"),
         complemento: yup.string(),
-        cep: yup.string()
-            .required("Informe o Cep")
-            .length(8, "O CEP deve ter 8 dígitos")
-            .matches(/^\d+$/, "O CEP deve conter apenas números"),
+        // cep: yup.string()
+        //     .required("Informe o Cep")
+        //     .length(8, "O CEP deve ter 8 dígitos")
+        //     .matches(/^\d+$/, "O CEP deve conter apenas números"),
         estado: yup.string().required("Estado é obrigatório!"),
         user_id: yup.string().required("Informe a pessoa!"),
     }).required();
@@ -52,7 +52,9 @@ export function NewEnd() {
                     reset()
                 } catch (error) {
                     if (error.response) {
-                        alert('Erro do servidor:', error.response.data);
+                        Swal.fire({
+                            text:error.response.data.message
+                        })
                     } else if (error.request) {
                         Swal.fire({
                             icon: 'error',
@@ -202,8 +204,8 @@ export function NewEnd() {
                         id="cep"
                         name="cep"
                         placeholder="XXXXXXXX"
-                        pattern="\d{8}"
-                        maxLength="8"
+                        // pattern="\d{8}"
+                        // maxLength="8"
                         {...register("cep", { setValueAs: (c) => c === "" ? null : c })}
                     />
                     <span
