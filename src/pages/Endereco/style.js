@@ -6,24 +6,25 @@ export const Container = styled.div`
     display: flex;
     margin: 50px 50px;
     border-radius: 10px;
+    overflow: hidden;
 
     > table {
         border-collapse: collapse;
         width: 100%;
-        text-align: left;
-
-        > tr,
-        th {
-            padding: 10px;
-        }
-        > th,
+        
+        th,
         td {
             text-align: left;
             padding: 8px;
         }
 
-        > tr:nth-child(even) {
-            background-color: #f9f9f9;
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        th {
+            background-color: #4caf50;
+            color: white;
         }
     }
 

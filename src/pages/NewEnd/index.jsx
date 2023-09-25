@@ -1,6 +1,8 @@
 import { Header } from "../../components/Header";
 import { Button } from "../../components/Button";
 import { FiArrowLeft } from 'react-icons/fi'
+import InputMask from "react-input-mask"
+
 import { Link, useParams, useNavigate } from "react-router-dom"
 import Swal from 'sweetalert2'
 
@@ -27,10 +29,10 @@ export function NewEnd() {
             .required("Informe o numero").positive("Informe o numero Positivo"),
         cidade: yup.string().required("Cidade é obrigatória!"),
         complemento: yup.string(),
-        // cep: yup.string()
-        //     .required("Informe o Cep")
-        //     .length(8, "O CEP deve ter 8 dígitos")
-        //     .matches(/^\d+$/, "O CEP deve conter apenas números"),
+        cep: yup.string()
+            .required("Informe o Cep"),
+            // .length(10, "O CEP deve ter 8 dígitos"),
+            // .matches(/^\d+$/, "O CEP deve conter apenas números"),
         estado: yup.string().required("Estado é obrigatório!"),
         user_id: yup.string().required("Informe a pessoa!"),
     }).required();
@@ -53,7 +55,7 @@ export function NewEnd() {
                 } catch (error) {
                     if (error.response) {
                         Swal.fire({
-                            text:error.response.data.message
+                            text: error.response.data.message
                         })
                     } else if (error.request) {
                         Swal.fire({
@@ -75,6 +77,7 @@ export function NewEnd() {
                 navigate("/endereco")
             }
         }
+
         createEnd(e)
 
     }, [])
@@ -82,13 +85,14 @@ export function NewEnd() {
     const update = useCallback(() => {
         async function up() {
             const end = await api.get(`/endereco/${id}`)
+            console.log(end.data.cep)
             setValue("id", end.data.id)
             setValue("nomeEnd", end.data.nomeEnd);
             setValue("bairro", end.data.bairro);
             setValue("cidade", end.data.cidade);
             setValue("numero", end.data.numero || "0000");
             setValue("complemento", end.data.complemento);
-            setValue("cep", end.data.cep || "00000000");
+            setValue("cep", end.data.cep.toString());
             setValue("estado", end.data.estado)
             setValue("user_id", end.data.user_id);
 
@@ -199,14 +203,26 @@ export function NewEnd() {
                     />
 
                     <label htmlFor="">Cep</label>
-                    <input
+                    {/* <input
                         type="text"
                         id="cep"
                         name="cep"
                         placeholder="XXXXXXXX"
+
                         // pattern="\d{8}"
                         // maxLength="8"
                         {...register("cep", { setValueAs: (c) => c === "" ? null : c })}
+                    /> */}
+                    <InputMask
+
+                        mask={"99.999-999"}
+                        alwaysShowMask={false}
+                        maskPlaceholder=''
+
+                        type={'text'}
+                        placeholder="00.000-000"
+
+                        {...register("cep", { setValueAs: (c) => c === "" ? null : c.replace('.','').replace(/-/,'')})}
                     />
                     <span
                         style={{

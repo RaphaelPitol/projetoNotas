@@ -3,6 +3,7 @@
     flex-direction: column;
     width: 450px;
     border-radius: 5px;
+ 
 }
 
 .form label:nth-of-type(n + 2) {

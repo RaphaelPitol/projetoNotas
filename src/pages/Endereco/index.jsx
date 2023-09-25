@@ -11,6 +11,7 @@ export function Endereco() {
 
     const [endereco, setEndereco] = useState([])
 
+
     const listEndereco = useCallback(() => {
         async function request() {
             const response = await api.get('/endereco')
@@ -34,6 +35,15 @@ export function Endereco() {
     useEffect(() => {
         listEndereco()
     }, [])
+
+    function formatCEP(cep) {
+        const cepString = String(cep);
+
+        if (cepString.length === 8) {
+            return cepString.slice(0, 2) + '.' + cepString.slice(2, 5) + '-' + cepString.slice(5);
+        }
+        return cepString;
+    }
 
 
     return (
@@ -102,7 +112,7 @@ export function Endereco() {
                                     <td>{end.numero}</td>
                                     <td>{end.cidade}</td>
                                     <td>{end.complemento}</td>
-                                    <td>{end.cep}</td>
+                                    <td>{formatCEP(end.cep)}</td>
                                     <td>{end.estado}</td>
                                     <td>{end.name}</td>
                                     <td>
