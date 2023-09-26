@@ -1,6 +1,7 @@
-span
+p
 {
-    color: red;
+    color: rgb(223, 47, 47);
     font-size: 16px;
-   
+    position: absolute;
+
 }

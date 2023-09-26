@@ -1,8 +1,9 @@
 
 import './styles.css'
-export function Span({text}){
+
+export const Span = ({children})=>{
     return(
-        <span>{text}</span>
+        <p>{children}</p>
     )
 
 }

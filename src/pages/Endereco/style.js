@@ -11,7 +11,7 @@ export const Container = styled.div`
     > table {
         border-collapse: collapse;
         width: 100%;
-        
+
         th,
         td {
             text-align: left;
@@ -29,7 +29,7 @@ export const Container = styled.div`
     }
 
     .edit {
-        color: lightskyblue;
+        color: #677e8d;
         background: none;
         border: none;
         margin-right: 10px;

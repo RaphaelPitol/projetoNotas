@@ -2,6 +2,8 @@ import { Header } from "../../components/Header";
 import { Button } from "../../components/Button";
 import { FiArrowLeft } from 'react-icons/fi'
 import InputMask from "react-input-mask"
+import { Span } from "../../components/Span";
+
 
 import { Link, useParams, useNavigate } from "react-router-dom"
 import Swal from 'sweetalert2'
@@ -15,6 +17,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 
 import './styles.css'
+
 
 export function NewEnd() {
     const navigate = useNavigate()
@@ -31,8 +34,8 @@ export function NewEnd() {
         complemento: yup.string(),
         cep: yup.string()
             .required("Informe o Cep"),
-            // .length(10, "O CEP deve ter 8 dígitos"),
-            // .matches(/^\d+$/, "O CEP deve conter apenas números"),
+        // .length(10, "O CEP deve ter 8 dígitos"),
+        // .matches(/^\d+$/, "O CEP deve conter apenas números"),
         estado: yup.string().required("Estado é obrigatório!"),
         user_id: yup.string().required("Informe a pessoa!"),
     }).required();
@@ -151,51 +154,26 @@ export function NewEnd() {
                     <input type="text"
                         {...register("nomeEnd")}
                     />
-                    <span
-                        style={{
-                            color: "red",
-                            marginTop: 47,
-                            fontSize: 16,
-                            position: "absolute"
-                        }}
-                    >{errors.nomeEnd?.message}</span>
+                    <div><Span>{errors.nomeEnd?.message}</Span></div>
+
 
                     <label htmlFor="">Bairro</label>
                     <input type="text"
                         {...register("bairro")}
                     />
-                    <span
-                        style={{
-                            color: "red",
-                            marginTop: 115,
-                            fontSize: 16,
-                            position: "absolute"
-                        }}
-                    >{errors.bairro?.message}</span>
+                    <div><Span>{errors.bairro?.message}</Span></div>
+
                     <label htmlFor="">Numero</label>
                     <input type="number"
                         {...register("numero", { setValueAs: (n) => n === "" ? null : n })}
                     />
-                    <span
-                        style={{
-                            color: "red",
-                            marginTop: 180,
-                            fontSize: 16,
-                            position: "absolute"
-                        }}
-                    >{errors.numero?.message}</span>
+                    <div><Span>{errors.numero?.message}</Span></div>
+
                     <label htmlFor="">Cidade</label>
                     <input type="text"
                         {...register("cidade")}
                     />
-                    <span
-                        style={{
-                            color: "red",
-                            marginTop: 250,
-                            fontSize: 16,
-                            position: "absolute"
-                        }}
-                    >{errors.cidade?.message}</span>
+                    <div><Span>{errors.cidade?.message}</Span></div>
 
                     <label htmlFor="">Complemento</label>
                     <input type="text"
@@ -203,16 +181,7 @@ export function NewEnd() {
                     />
 
                     <label htmlFor="">Cep</label>
-                    {/* <input
-                        type="text"
-                        id="cep"
-                        name="cep"
-                        placeholder="XXXXXXXX"
 
-                        // pattern="\d{8}"
-                        // maxLength="8"
-                        {...register("cep", { setValueAs: (c) => c === "" ? null : c })}
-                    /> */}
                     <InputMask
 
                         mask={"99.999-999"}
@@ -222,16 +191,10 @@ export function NewEnd() {
                         type={'text'}
                         placeholder="00.000-000"
 
-                        {...register("cep", { setValueAs: (c) => c === "" ? null : c.replace('.','').replace(/-/,'')})}
+                        {...register("cep", { setValueAs: (c) => c === "" ? null : c.replace('.', '').replace(/-/, '') })}
                     />
-                    <span
-                        style={{
-                            color: "red",
-                            marginTop: 380,
-                            fontSize: 16,
-                            position: "absolute"
-                        }}
-                    >{errors.cep?.message}</span>
+                    <div><Span>{errors.cep?.message}</Span></div>
+
                     <label htmlFor="">Estado</label>
                     <select className="estado"
                         {...register("estado")}
@@ -265,14 +228,7 @@ export function NewEnd() {
                         <option value="SE">SE</option>
                         <option value="TO">TO</option>
                     </select>
-                    <span
-                        style={{
-                            color: "red",
-                            marginTop: 450,
-                            fontSize: 16,
-                            position: "absolute"
-                        }}
-                    >{errors.estado?.message}</span>
+                    <div><Span>{errors.estado?.message}</Span></div>
 
                     <label htmlFor="">Nome</label>
                     <select className="user"
@@ -288,14 +244,8 @@ export function NewEnd() {
                             ))
                         }
                     </select>
-                    <span
-                        style={{
-                            color: "red",
-                            marginTop: 510,
-                            fontSize: 16,
-                            position: "absolute"
-                        }}
-                    >{errors.user_id?.message}</span>
+                    <div><Span>{errors.cidade?.message}</Span></div>
+
                     <div className="divButton">
 
                         <Button type="submit"
