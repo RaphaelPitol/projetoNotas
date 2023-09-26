@@ -88,7 +88,7 @@ export function NewEnd() {
     const update = useCallback(() => {
         async function up() {
             const end = await api.get(`/endereco/${id}`)
-            console.log(end.data.cep)
+
             setValue("id", end.data.id)
             setValue("nomeEnd", end.data.nomeEnd);
             setValue("bairro", end.data.bairro);
@@ -110,7 +110,9 @@ export function NewEnd() {
         async function listUsers() {
             const response = await api.get('/users')
             setUser(response.data)
-            update()
+            if(id){
+                update()
+            }
         }
         listUsers()
     }, [])
@@ -154,26 +156,26 @@ export function NewEnd() {
                     <input type="text"
                         {...register("nomeEnd")}
                     />
-                    <div><Span>{errors.nomeEnd?.message}</Span></div>
+                    <Span>{errors.nomeEnd?.message}</Span>
 
 
                     <label htmlFor="">Bairro</label>
                     <input type="text"
                         {...register("bairro")}
                     />
-                    <div><Span>{errors.bairro?.message}</Span></div>
+                    <Span>{errors.bairro?.message}</Span>
 
                     <label htmlFor="">Numero</label>
                     <input type="number"
                         {...register("numero", { setValueAs: (n) => n === "" ? null : n })}
                     />
-                    <div><Span>{errors.numero?.message}</Span></div>
+                    <Span>{errors.numero?.message}</Span>
 
                     <label htmlFor="">Cidade</label>
                     <input type="text"
                         {...register("cidade")}
                     />
-                    <div><Span>{errors.cidade?.message}</Span></div>
+                    <Span>{errors.cidade?.message}</Span>
 
                     <label htmlFor="">Complemento</label>
                     <input type="text"
@@ -193,7 +195,7 @@ export function NewEnd() {
 
                         {...register("cep", { setValueAs: (c) => c === "" ? null : c.replace('.', '').replace(/-/, '') })}
                     />
-                    <div><Span>{errors.cep?.message}</Span></div>
+                    <Span>{errors.cep?.message}</Span>
 
                     <label htmlFor="">Estado</label>
                     <select className="estado"
@@ -228,7 +230,7 @@ export function NewEnd() {
                         <option value="SE">SE</option>
                         <option value="TO">TO</option>
                     </select>
-                    <div><Span>{errors.estado?.message}</Span></div>
+                    <Span>{errors.estado?.message}</Span>
 
                     <label htmlFor="">Nome</label>
                     <select className="user"
@@ -244,7 +246,7 @@ export function NewEnd() {
                             ))
                         }
                     </select>
-                    <div><Span>{errors.cidade?.message}</Span></div>
+                    <Span>{errors.cidade?.message}</Span>
 
                     <div className="divButton">
 

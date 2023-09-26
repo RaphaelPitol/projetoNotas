@@ -39,10 +39,8 @@ export function Endereco() {
     function formatCEP(cep) {
         const cepString = String(cep);
 
-        if (cepString.length === 8) {
-            return cepString.slice(0, 2) + '.' + cepString.slice(2, 5) + '-' + cepString.slice(5);
-        }
-        return cepString;
+        return cepString.slice(0, 2) + '.' + cepString.slice(2, 5) + '-' + cepString.slice(5);
+
     }
 
 
