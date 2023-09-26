@@ -3,6 +3,7 @@ import { FiArrowLeft, FiPlus } from 'react-icons/fi'
 import { AiFillEdit, AiFillDelete } from 'react-icons/ai'
 import { Header } from "../../components/Header"
 import { Container } from "./style"
+import { funCep } from "../../funcoes"
 
 import { api } from "../../service/api";
 import { useCallback, useEffect, useState } from "react";
@@ -36,12 +37,13 @@ export function Endereco() {
         listEndereco()
     }, [])
 
-    function formatCEP(cep) {
-        const cepString = String(cep);
 
-        return cepString.slice(0, 2) + '.' + cepString.slice(2, 5) + '-' + cepString.slice(5);
+    // function formatCEP(cep) {
+    //     const cepString = String(cep);
 
-    }
+    //     return cepString.slice(0, 2) + '.' + cepString.slice(2, 5) + '-' + cepString.slice(5);
+
+    // }
 
 
     return (
@@ -110,7 +112,7 @@ export function Endereco() {
                                     <td>{end.numero}</td>
                                     <td>{end.cidade}</td>
                                     <td>{end.complemento}</td>
-                                    <td>{formatCEP(end.cep)}</td>
+                                    <td>{funCep(end.cep)}</td>
                                     <td>{end.estado}</td>
                                     <td>{end.name}</td>
                                     <td>

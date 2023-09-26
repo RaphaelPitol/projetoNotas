@@ -3,6 +3,7 @@ import { Button } from "../../components/Button";
 import { FiArrowLeft } from 'react-icons/fi'
 import InputMask from "react-input-mask"
 import { Span } from "../../components/Span";
+import { funCep } from "../../funcoes";
 
 
 import { Link, useParams, useNavigate } from "react-router-dom"
@@ -95,7 +96,7 @@ export function NewEnd() {
             setValue("cidade", end.data.cidade);
             setValue("numero", end.data.numero || "0000");
             setValue("complemento", end.data.complemento);
-            setValue("cep", end.data.cep.toString());
+            setValue("cep", funCep(end.data.cep));
             setValue("estado", end.data.estado)
             setValue("user_id", end.data.user_id);
 
@@ -110,7 +111,7 @@ export function NewEnd() {
         async function listUsers() {
             const response = await api.get('/users')
             setUser(response.data)
-            if(id){
+            if (id) {
                 update()
             }
         }

@@ -43,10 +43,10 @@ export function Cars() {
 
     }, [])
 
-  
+
     const create = useCallback((e)=>{
         async function createCar(e) {
-    
+
             if (!id) {
                 try {
                     await api.post("/cars", e)
@@ -66,10 +66,10 @@ export function Cars() {
                             footer: '<a href="">Tente mais tarde!</a>'
                         })
                     }
-    
+
                 }
             }
-    
+
             if (id) {
                 await api.put("/cars", e)
                 Swal.fire(
@@ -78,7 +78,7 @@ export function Cars() {
                 )
                 navigate("/lista")
             }
-    
+
         }
         createCar(e)
 
@@ -90,7 +90,7 @@ export function Cars() {
         async function listUsers() {
             const response = await api.get('/users')
             setUser(response.data)
-            update()
+            if(id)update()
         }
         listUsers()
     }, [])
