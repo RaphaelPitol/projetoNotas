@@ -3,7 +3,7 @@ import { Button } from "../../components/Button";
 import { FiArrowLeft } from 'react-icons/fi'
 import InputMask from "react-input-mask"
 import { Span } from "../../components/Span";
-import { funCep } from "../../funcoes";
+import { funCep, formatCep } from "../../funcoes";
 
 
 import { Link, useParams, useNavigate } from "react-router-dom"
@@ -56,6 +56,7 @@ export function NewEnd() {
                         'success'
                     )
                     reset()
+                    navigate("/endereco")
                 } catch (error) {
                     if (error.response) {
                         Swal.fire({
@@ -194,7 +195,7 @@ export function NewEnd() {
                         type={'text'}
                         placeholder="00.000-000"
 
-                        {...register("cep", { setValueAs: (c) => c === "" ? null : c.replace('.', '').replace(/-/, '') })}
+                        {...register("cep", { setValueAs: (c) => c === "" ? null : formatCep(c)})}
                     />
                     <Span>{errors.cep?.message}</Span>
 

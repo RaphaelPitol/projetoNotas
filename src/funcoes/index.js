@@ -9,3 +9,8 @@ export function funCep(cep) {
         cepString.slice(5)
     );
 }
+
+export function formatCep(cep){
+    const c = cep.replace('.', '').replace(/-/, '')
+    return c;
+}
