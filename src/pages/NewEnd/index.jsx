@@ -3,13 +3,13 @@ import { Button } from "../../components/Button";
 import { FiArrowLeft } from 'react-icons/fi'
 import InputMask from "react-input-mask"
 import { Span } from "../../components/Span";
-import { funCep, formatCep } from "../../funcoes";
+
 
 
 import { Link, useParams, useNavigate } from "react-router-dom"
 import Swal from 'sweetalert2'
 
-import { api } from "../../service/api";
+import { addMascaraCep, api } from "../../service/api";
 import { useCallback, useEffect, useState } from "react";
 
 
@@ -97,7 +97,7 @@ export function NewEnd() {
             setValue("cidade", end.data.cidade);
             setValue("numero", end.data.numero || "0000");
             setValue("complemento", end.data.complemento);
-            setValue("cep", funCep(end.data.cep));
+            setValue("cep", addMascaraCep(end.data.cep));
             setValue("estado", end.data.estado)
             setValue("user_id", end.data.user_id);
 
@@ -195,7 +195,7 @@ export function NewEnd() {
                         type={'text'}
                         placeholder="00.000-000"
 
-                        {...register("cep", { setValueAs: (c) => c === "" ? null : formatCep(c)})}
+                        {...register("cep", { setValueAs: (c) => c === "" ? null : removeMascaraCep(c)})}
                     />
                     <Span>{errors.cep?.message}</Span>
 

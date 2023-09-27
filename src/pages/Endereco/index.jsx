@@ -3,9 +3,9 @@ import { FiArrowLeft, FiPlus } from 'react-icons/fi'
 import { AiFillEdit, AiFillDelete } from 'react-icons/ai'
 import { Header } from "../../components/Header"
 import { Container } from "./style"
-import { funCep } from "../../funcoes"
 
-import { api } from "../../service/api";
+
+import { addMascaraCep, api } from "../../service/api";
 import { useCallback, useEffect, useState } from "react";
 
 export function Endereco() {
@@ -112,7 +112,7 @@ export function Endereco() {
                                     <td>{end.numero}</td>
                                     <td>{end.cidade}</td>
                                     <td>{end.complemento}</td>
-                                    <td>{funCep(end.cep)}</td>
+                                    <td>{addMascaraCep(end.cep)}</td>
                                     <td>{end.estado}</td>
                                     <td>{end.name}</td>
                                     <td>
