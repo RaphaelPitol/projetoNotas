@@ -1,9 +1,10 @@
 
-import './styles.css'
+import { Container } from './styles'
+
 
 export const Span = ({children})=>{
     return(
-        <div><p className='span'>{children}</p></div>
+        <Container><p className='span'>{children}</p></Container>
     )
 
 }

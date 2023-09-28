@@ -3,9 +3,10 @@ import { FiArrowLeft, FiPlus } from 'react-icons/fi'
 import { AiFillEdit, AiFillDelete } from 'react-icons/ai'
 import { Header } from "../../components/Header"
 import { Container } from "./style"
+import Swal from 'sweetalert2'
 
-
-import { addMascaraCep, api } from "../../service/api";
+import { addMascaraCep } from "../../service/mascara"
+import { api } from "../../service/api";
 import { useCallback, useEffect, useState } from "react";
 
 export function Endereco() {
@@ -22,29 +23,29 @@ export function Endereco() {
     }, [])
 
     const delet = useCallback((id) => {
-        async function removEnd(id) {
-            const confirm = window.confirm('Deseja realmente Excluir?')
-            if (confirm) {
-                await api.delete(`/endereco/${id}`);
-                listEndereco()
-            }
+         function removEnd(id) {
+            Swal.fire({
+                text: "Você realmente deseja Excluir?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim!',
+                cancelButtonText: 'Não'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    await api.delete(`/endereco/${id}`);
+                    listEndereco();
+                }
+            });
         }
-        removEnd(id)
-    }, [])
+        removEnd(id);
+    }, [listEndereco]);
 
 
     useEffect(() => {
         listEndereco()
     }, [])
-
-
-    // function formatCEP(cep) {
-    //     const cepString = String(cep);
-
-    //     return cepString.slice(0, 2) + '.' + cepString.slice(2, 5) + '-' + cepString.slice(5);
-
-    // }
-
 
     return (
 
@@ -107,14 +108,14 @@ export function Endereco() {
                         {
                             endereco.map(end => (
                                 <tr key={String(end.id)}>
-                                    <td>{end.nomeEnd}</td>
-                                    <td>{end.bairro}</td>
+                                    <td>{end.nomeEnd.toUpperCase()}</td>
+                                    <td>{end.bairro.toUpperCase()}</td>
                                     <td>{end.numero}</td>
-                                    <td>{end.cidade}</td>
-                                    <td>{end.complemento}</td>
+                                    <td>{end.cidade.toUpperCase()}</td>
+                                    <td>{end.complemento.toUpperCase()}</td>
                                     <td>{addMascaraCep(end.cep)}</td>
                                     <td>{end.estado}</td>
-                                    <td>{end.name}</td>
+                                    <td>{end.name.toUpperCase()}</td>
                                     <td>
 
                                         <Link to={`/newEnd/${end.id}`} className="edit"

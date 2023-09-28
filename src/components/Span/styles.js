@@ -1,3 +1,6 @@
+import styled from "styled-components";
+
+export const Container = styled.div`
 .span
 {
     color: rgb(223, 47, 47);
@@ -6,3 +9,5 @@
     position: absolute;
 
 }
+
+`

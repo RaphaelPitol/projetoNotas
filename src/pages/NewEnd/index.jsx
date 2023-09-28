@@ -4,12 +4,13 @@ import { FiArrowLeft } from 'react-icons/fi'
 import InputMask from "react-input-mask"
 import { Span } from "../../components/Span";
 
-
+import { toast } from 'react-toastify';
 
 import { Link, useParams, useNavigate } from "react-router-dom"
 import Swal from 'sweetalert2'
 
-import { addMascaraCep, api } from "../../service/api";
+import { addMascaraCep, removeMascaraCep } from "../../service/mascara";
+import { api} from "../../service/api";
 import { useCallback, useEffect, useState } from "react";
 
 
@@ -17,7 +18,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from "yup";
 
-import './styles.css'
+import { Container } from './styles'
 
 
 export function NewEnd() {
@@ -55,6 +56,9 @@ export function NewEnd() {
                         'Salvo com Sucesso!',
                         'success'
                     )
+                    // toast.success("Deu certo errado!",{
+                    //     position: toast.POSITION.TOP_CENTER
+                    // })
                     reset()
                     navigate("/endereco")
                 } catch (error) {
@@ -98,6 +102,7 @@ export function NewEnd() {
             setValue("numero", end.data.numero || "0000");
             setValue("complemento", end.data.complemento);
             setValue("cep", addMascaraCep(end.data.cep));
+            console.log(end.data.cep)
             setValue("estado", end.data.estado)
             setValue("user_id", end.data.user_id);
 
@@ -120,6 +125,28 @@ export function NewEnd() {
     }, [])
 
 
+    const chageCep = useCallback(async (cep) => {
+        if (cep.length !== 10) return;
+
+        const c = removeMascaraCep(cep);
+
+        try {
+            const response = await fetch(`https://viacep.com.br/ws/${c}/json/`);
+            const data = await response.json();
+
+            if (!data.erro) {
+                setValue("nomeEnd", data.logradouro || "");
+                setValue("bairro", data.bairro || "");
+                setValue("cidade", data.localidade || "");
+                setValue("estado", data.uf || "");
+            } else {
+                toast.error("CEP não encontrado.");
+            }
+        } catch (error) {
+            console.error("Erro ao buscar CEP:", error);
+            toast.error("Erro ao buscar CEP.");
+        }
+    }, [setValue]);
 
 
     return (
@@ -151,114 +178,117 @@ export function NewEnd() {
                     }}
                 > <FiArrowLeft /></Link>
             </div>
-            <div className="divForm">
-                <form className="form" onSubmit={handleSubmit(create)}>
-
-                    <label htmlFor="">Endereço</label>
-                    <input type="text"
-                        {...register("nomeEnd")}
-                    />
-                    <Span>{errors.nomeEnd?.message}</Span>
+            <Container>
 
 
-                    <label htmlFor="">Bairro</label>
-                    <input type="text"
-                        {...register("bairro")}
-                    />
-                    <Span>{errors.bairro?.message}</Span>
-
-                    <label htmlFor="">Numero</label>
-                    <input type="number"
-                        {...register("numero", { setValueAs: (n) => n === "" ? null : n })}
-                    />
-                    <Span>{errors.numero?.message}</Span>
-
-                    <label htmlFor="">Cidade</label>
-                    <input type="text"
-                        {...register("cidade")}
-                    />
-                    <Span>{errors.cidade?.message}</Span>
-
-                    <label htmlFor="">Complemento</label>
-                    <input type="text"
-                        {...register("complemento")}
-                    />
-
+                <div className="divForm">
+                    <form className="form" onSubmit={handleSubmit(create)}>
                     <label htmlFor="">Cep</label>
-
-                    <InputMask
-
-                        mask={"99.999-999"}
-                        alwaysShowMask={false}
-                        maskPlaceholder=''
-
-                        type={'text'}
-                        placeholder="00.000-000"
-
-                        {...register("cep", { setValueAs: (c) => c === "" ? null : removeMascaraCep(c)})}
-                    />
-                    <Span>{errors.cep?.message}</Span>
-
-                    <label htmlFor="">Estado</label>
-                    <select className="estado"
-                        {...register("estado")}
-                        id="">
-                        <option value="">--</option>
-                        <option value="AC">AC</option>
-                        <option value="AL">AL</option>
-                        <option value="AP">AP</option>
-                        <option value="AM">AM</option>
-                        <option value="BA">BA</option>
-                        <option value="CE">CE</option>
-                        <option value="DF">DF</option>
-                        <option value="ES">ES</option>
-                        <option value="GO">GO</option>
-                        <option value="MA">MA</option>
-                        <option value="MT">MT</option>
-                        <option value="MS">MS</option>
-                        <option value="MG">MG</option>
-                        <option value="PA">PA</option>
-                        <option value="PB">PB</option>
-                        <option value="PR">PR</option>
-                        <option value="PE">PE</option>
-                        <option value="PI">PI</option>
-                        <option value="RJ">RJ</option>
-                        <option value="RN">RN</option>
-                        <option value="RS">RS</option>
-                        <option value="RO">RO</option>
-                        <option value="RR">RR</option>
-                        <option value="SC">SC</option>
-                        <option value="SP">SP</option>
-                        <option value="SE">SE</option>
-                        <option value="TO">TO</option>
-                    </select>
-                    <Span>{errors.estado?.message}</Span>
-
-                    <label htmlFor="">Nome</label>
-                    <select className="user"
-                        {...register("user_id")}
-                    >
-                        <option value="">Nome...</option>
-                        {
-                            user.map(users => (
-                                <option
-                                    key={String(users.id)}
-                                    value={users.id}
-                                >{users.name}</option>
-                            ))
-                        }
-                    </select>
-                    <Span>{errors.cidade?.message}</Span>
-
-                    <div className="divButton">
-
-                        <Button type="submit"
-                            title="Salvar"
+                        <InputMask
+                            mask={"99.999-999"}
+                            alwaysShowMask={false}
+                            maskPlaceholder=''
+                            type={'text'}
+                            placeholder="00.000-000"
+                            onChangeCapture={e => chageCep(e.target.value)}
+                            {...register("cep", { setValueAs: (c) => c === "" ? null : removeMascaraCep(c) })}
                         />
-                    </div>
 
-                </form>
-            </div>
+                        <Span>{errors.cep?.message}</Span>
+
+
+                        <label htmlFor="">Endereço</label>
+                        <input type="text"
+                            {...register("nomeEnd")}
+                        />
+                        <Span>{errors.nomeEnd?.message}</Span>
+
+
+                        <label htmlFor="">Bairro</label>
+                        <input type="text"
+                            {...register("bairro")}
+                        />
+                        <Span>{errors.bairro?.message}</Span>
+
+                        <label htmlFor="">Numero</label>
+                        <input type="number"
+                            {...register("numero", { setValueAs: (n) => n === "" ? null : n })}
+                        />
+                        <Span>{errors.numero?.message}</Span>
+
+                        <label htmlFor="">Cidade</label>
+                        <input type="text"
+                            {...register("cidade")}
+                        />
+                        <Span>{errors.cidade?.message}</Span>
+
+                        <label htmlFor="">Complemento</label>
+                        <input type="text"
+                            {...register("complemento")}
+                        />
+
+                        <label htmlFor="">Estado</label>
+                        <select className="estado"
+                            {...register("estado")}
+                            id="">
+                            <option value="">--</option>
+                            <option value="AC">AC</option>
+                            <option value="AL">AL</option>
+                            <option value="AP">AP</option>
+                            <option value="AM">AM</option>
+                            <option value="BA">BA</option>
+                            <option value="CE">CE</option>
+                            <option value="DF">DF</option>
+                            <option value="ES">ES</option>
+                            <option value="GO">GO</option>
+                            <option value="MA">MA</option>
+                            <option value="MT">MT</option>
+                            <option value="MS">MS</option>
+                            <option value="MG">MG</option>
+                            <option value="PA">PA</option>
+                            <option value="PB">PB</option>
+                            <option value="PR">PR</option>
+                            <option value="PE">PE</option>
+                            <option value="PI">PI</option>
+                            <option value="RJ">RJ</option>
+                            <option value="RN">RN</option>
+                            <option value="RS">RS</option>
+                            <option value="RO">RO</option>
+                            <option value="RR">RR</option>
+                            <option value="SC">SC</option>
+                            <option value="SP">SP</option>
+                            <option value="SE">SE</option>
+                            <option value="TO">TO</option>
+                        </select>
+
+                        <Span>{errors.estado?.message}</Span>
+
+                        <label htmlFor="">Nome</label>
+                        <select className="user"
+                            {...register("user_id")}
+                        >
+                            <option value="">Nome...</option>
+                            {
+                                user.map(users => (
+                                    <option
+                                        key={String(users.id)}
+                                        value={users.id}
+                                    >{users.name}</option>
+                                ))
+                            }
+                        </select>
+                        <Span>{errors.user_id?.message}</Span>
+
+                        <div className="divButton">
+
+                            <Button type="submit"
+                                title="Salvar"
+                            />
+                        </div>
+
+                    </form>
+                </div>
+            </Container>
         </>
     );
 }
