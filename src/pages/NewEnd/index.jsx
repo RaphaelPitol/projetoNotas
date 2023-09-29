@@ -62,9 +62,9 @@ export function NewEnd() {
                     reset()
                     navigate("/endereco")
                 } catch (error) {
-                    if (error.response) {
+                    if (error.response.data.message !== String) {
                         Swal.fire({
-                            text: error.response.data.message
+                            text:"Não foi possivel Salvar, Entre em contato com o Suporte!"
                         })
                     } else if (error.request) {
                         Swal.fire({
