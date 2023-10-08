@@ -48,6 +48,7 @@ export function NewEnd() {
 
 
     const create = useCallback((e) => {
+        console.log(e)
         async function createEnd(e) {
             if (!id) {
                 try {

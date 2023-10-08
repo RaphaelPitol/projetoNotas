@@ -1,9 +1,11 @@
 import { Link } from "react-router-dom"
-import { FiArrowLeft, FiPlus } from 'react-icons/fi'
+import { FiArrowLeft, FiPlus, FiSearch } from 'react-icons/fi'
 import { AiFillEdit, AiFillDelete } from 'react-icons/ai'
+import { useForm } from "react-hook-form";
 import { Header } from "../../components/Header"
-import { Container } from "./style"
+import { Container, FormBusca } from "./style"
 import Swal from 'sweetalert2'
+
 
 import { addMascaraCep } from "../../service/mascara"
 import { api } from "../../service/api";
@@ -12,18 +14,50 @@ import { useCallback, useEffect, useState } from "react";
 export function Endereco() {
 
     const [endereco, setEndereco] = useState([])
+    const [page, setPage] = useState({})
+
+    const [p, setP] = useState("")
+
+    const { register, handleSubmit, watch } = useForm();
+
+    const buscaNome = useCallback((e) => {
+        async function request(e) {
+            const response = await api.get(
+                `/endereco/nome/nome?nomeEnd=${e.nomeEnd}&bairro=${e.bairro}&numero=${e.numero}&cidade=${e.cidade}&cep=${e.cep}&estado=${e.estado}&nome=${e.nome}`
+            )
+            console.log(response.data)
+            setEndereco(response.data)
+
+        }
+        request(e)
+    }, [])
+
+
+    const fetchPageData = useCallback(async (pageNumber) => {
+        if (pageNumber !== p) {
+            const response = await api.get(`/endereco?page=${pageNumber}`);
+            setEndereco(response.data);
+            setPage(response.data.paginatin);
+            setP(pageNumber);
+
+        }
+    }, [p]);
 
 
     const listEndereco = useCallback(() => {
         async function request() {
-            const response = await api.get('/endereco')
+            const response = await api.get(`/endereco`)
             setEndereco(response.data)
+            setPage(response.data.paginatin)
+
+
+
         }
         request()
     }, [])
 
     const delet = useCallback((id) => {
-         function removEnd(id) {
+        function removEnd(id) {
             Swal.fire({
                 text: "Você realmente deseja Excluir?",
                 icon: 'warning',
@@ -44,8 +78,11 @@ export function Endereco() {
 
 
     useEffect(() => {
+
         listEndereco()
+
     }, [])
+
 
     return (
 
@@ -85,10 +122,41 @@ export function Endereco() {
                 </Link>
             </div>
 
+            <FormBusca>
+                <h3>Busca Personalizada</h3>
+                <form onSubmit={handleSubmit(buscaNome)}>
+                    <input type="text" placeholder="Endereço"
+                        {...register("nomeEnd")}
+                    />
+
+                    <input type="text" placeholder="Bairro"
+                        {...register("bairro")}
+                    />
+                    <input type="text" placeholder="Numero"
+                        {...register("numero")}
+                    />
+                    <input type="text" placeholder="Cidade"
+                        {...register("cidade")}
+                    />
+                    <input type="text" placeholder="Cep"
+                        {...register("cep")}
+                    />
+                    <input type="text" placeholder="Estado"
+                        {...register("estado")}
+                    />
+                    <input type="text" placeholder="Nome"
+                        {...register("nome")}
+                    />
+                    <button type="submit"><FiSearch /></button>
+                </form>
+
+            </FormBusca>
+
+
             <Container>
 
 
-                <table>
+                <table id="myTable">
                     <thead>
                         <tr>
                             <th>Endereço</th>
@@ -106,7 +174,7 @@ export function Endereco() {
 
 
                         {
-                            endereco.map(end => (
+                            endereco.list?.map(end => (
                                 <tr key={String(end.id)}>
                                     <td>{end.nomeEnd.toUpperCase()}</td>
                                     <td>{end.bairro.toUpperCase()}</td>
@@ -133,8 +201,19 @@ export function Endereco() {
                             ))
                         }
                     </tbody>
+                    <div className="page"
+                    >
+                    <p>Qtd: {page.countEnd}</p>
+                        <button onClick={() => fetchPageData(page.nextPage)}>Prox: {page.nextPage}</button>
+                        <button>Atual: {page.page}</button>
+                        <button onClick={() => fetchPageData(page.prevPage)}>Prev: {page.prevPage}</button>
+                        <button onClick={() => fetchPageData(page.lastPage)}>Ult.: {page.lastPage}</button>
+
+                    </div>
                 </table>
+
             </Container>
+
         </>
     )
 }

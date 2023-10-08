@@ -8,6 +8,7 @@ import {Cars} from '../pages/Cars';
 import { ListarCars } from '../pages/ListarCars';
 import { Endereco } from '../pages/Endereco';
 import { NewEnd } from '../pages/NewEnd';
+import { Teste } from '../pages/Teste';
 
 
 
@@ -22,6 +23,7 @@ export function AppRoutes(){
                <Route path='/lista' element={<ListarCars/>}/>
                <Route path='/endereco' element={<Endereco/>}/>
                <Route path='/newEnd/:id?' element={<NewEnd/>}/>
+               <Route path='/teste' element={<Teste/>}/>
           </Routes>
      )
 

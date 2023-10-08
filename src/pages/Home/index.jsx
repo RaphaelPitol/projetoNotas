@@ -119,7 +119,7 @@ export function Home() {
       >
         <NewBut to="/cars">Cars</NewBut>
 
-        <NewButEnd to="/endereco">Endereço</NewButEnd>
+        <NewButEnd to="/teste">Endereço</NewButEnd>
 
         <NewNote to="/new">
           <FiPlus></FiPlus>
