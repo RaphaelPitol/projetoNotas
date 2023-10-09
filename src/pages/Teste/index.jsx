@@ -60,19 +60,19 @@ export function Teste() {
 
     const navigate = useNavigate()
     const [rows, setRows] = useState([])
-    const [page, setPag] = useState({})
 
-    const [rowCountState, setRowCountState] = useState({})
+    const [rowCountState, setRowCountState] = useState()
 
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
         pageSize: 5,
-      })
+    })
 
-      useEffect(() => {
+    useEffect(() => {
+
         handlePagination(paginationModel.page)
         return
-    }, [paginationModel])
+    }, [])
 
 
     const handlePagination = useCallback((pages) => {
@@ -95,21 +95,19 @@ export function Teste() {
 
         async function request(e) {
             const response = await api.get(
-                `/endereco/nome/nome?nomeEnd=${e.nomeEnd}&bairro=${e.bairro}&numero=${e.numero}&cidade=${e.cidade}&cep=${e.cep}&estado=${e.estado}&nome=${e.nome}`
+                `/endereco/busca?nomeEnd=${e.nomeEnd}&bairro=${e.bairro}&numero=${e.numero}&cidade=${e.cidade}&cep=${e.cep}&estado=${e.estado}&nome=${e.nome}&page=${e.page}`
             )
             setRows(response.data)
         }
         request(e)
     }, [])
 
-    const listEndereco = useCallback(() => {
-        console.log('e parametro')
-        console.log()
+    const listEndereco = useCallback((page) => {
+
         async function request() {
-            const response = await api.get(`/endereco`)
-            console.log(response.data.paginatin)
-            setPag(response.data.paginatin)
-            setRows(response.data.list)
+            const response = await api.get(`/endereco/${page}`)
+            console.log(response.data)
+            setRows(response.data)
         }
         request()
     }, [])
@@ -144,7 +142,7 @@ export function Teste() {
 
     useEffect(() => {
 
-        listEndereco()
+        listEndereco(paginationModel.page)
 
     }, [])
 
@@ -242,7 +240,7 @@ export function Teste() {
                         initialState={{
 
                         }}
-                        pageSizeOptions={[5,10]}
+                        pageSizeOptions={[5, 10]}
 
                         rowCount={rowCountState}
                         paginationModel={paginationModel}

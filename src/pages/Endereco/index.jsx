@@ -203,11 +203,11 @@ export function Endereco() {
                     </tbody>
                     <div className="page"
                     >
-                    <p>Qtd: {page.countEnd}</p>
-                        <button onClick={() => fetchPageData(page.nextPage)}>Prox: {page.nextPage}</button>
-                        <button>Atual: {page.page}</button>
                         <button onClick={() => fetchPageData(page.prevPage)}>Prev: {page.prevPage}</button>
+                        <button>Atual: {page.page}</button>
+                        <button onClick={() => fetchPageData(page.nextPage)}>Prox: {page.nextPage}</button>
                         <button onClick={() => fetchPageData(page.lastPage)}>Ult.: {page.lastPage}</button>
+                        <p>Qtd: {page.countEnd}</p>
 
                     </div>
                 </table>
