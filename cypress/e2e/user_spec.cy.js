@@ -1,3 +1,4 @@
+const userTesteCypress = String(Math.random(), 1000).replace('.', '')
 
 describe("Text login", () => {
     it('empty login entries text', () => {
@@ -20,8 +21,8 @@ describe("Text login", () => {
         cy.visit("/");
         cy.get('a').click()
         cy.get(':nth-child(4) > input').type("usuario1")
-        cy.get(':nth-child(5) > input').type("useremail")
-        cy.get(':nth-child(6) > input').type("123")
+        cy.get(':nth-child(5) > input').type("useremail"+userTesteCypress)
+        cy.get(':nth-child(6) > input').type("senha"+userTesteCypress)
         cy.contains("Cadastrar").click()
         cy.get('.swal2-confirm').click()
 
