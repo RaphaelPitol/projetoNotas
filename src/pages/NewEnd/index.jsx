@@ -10,7 +10,7 @@ import { Link, useParams, useNavigate } from "react-router-dom"
 import Swal from 'sweetalert2'
 
 import { addMascaraCep, removeMascaraCep } from "../../service/mascara";
-import { api} from "../../service/api";
+import { api } from "../../service/api";
 import { useCallback, useEffect, useState } from "react";
 
 
@@ -48,7 +48,7 @@ export function NewEnd() {
 
 
     const create = useCallback((e) => {
-        console.log(e)
+
         async function createEnd(e) {
             if (!id) {
                 try {
@@ -57,15 +57,12 @@ export function NewEnd() {
                         'Salvo com Sucesso!',
                         'success'
                     )
-                    // toast.success("Deu certo errado!",{
-                    //     position: toast.POSITION.TOP_CENTER
-                    // })
                     reset()
                     navigate("/endereco")
                 } catch (error) {
                     if (error.response.data.message !== String) {
                         Swal.fire({
-                            text:"Não foi possivel Salvar, Entre em contato com o Suporte!"
+                            text: "Não foi possivel Salvar, Entre em contato com o Suporte!"
                         })
                     } else if (error.request) {
                         Swal.fire({
@@ -94,7 +91,7 @@ export function NewEnd() {
 
     const update = useCallback(() => {
         async function up() {
-            const end = await api.get(`/endereco/${id}`)
+            const end = await api.get(`/endereco/id/id?id=${id}`)
 
             setValue("id", end.data.id)
             setValue("nomeEnd", end.data.nomeEnd);
@@ -184,7 +181,7 @@ export function NewEnd() {
 
                 <div className="divForm">
                     <form className="form" onSubmit={handleSubmit(create)}>
-                    <label htmlFor="">Cep</label>
+                        <label htmlFor="">Cep</label>
                         <InputMask
                             mask={"99.999-999"}
                             alwaysShowMask={false}

@@ -14,19 +14,26 @@ import { useCallback, useEffect, useState } from "react";
 export function Endereco() {
 
     const [endereco, setEndereco] = useState([])
-    const [page, setPage] = useState({})
+    const [rowCountState, setRowCountState] = useState()
+    const [page, setPage] = useState({
+        page: 0,
+        pageSize: 5,
+    })
 
-    const [p, setP] = useState("")
+    const qtdPg = Math.ceil(rowCountState / page.pageSize)
+
+
 
     const { register, handleSubmit, watch } = useForm();
 
     const buscaNome = useCallback((e) => {
         async function request(e) {
             const response = await api.get(
-                `/endereco/nome/nome?nomeEnd=${e.nomeEnd}&bairro=${e.bairro}&numero=${e.numero}&cidade=${e.cidade}&cep=${e.cep}&estado=${e.estado}&nome=${e.nome}`
+                `/endereco/lista/page?nomeEnd=${e.nomeEnd}&bairro=${e.bairro}&numero=${e.numero}&cidade=${e.cidade}&cep=${e.cep}&estado=${e.estado}&name=${e.nome}&page=${page.page}`
             )
-            console.log(response.data)
-            setEndereco(response.data)
+
+            console.log(response.data.list)
+            setEndereco(response.data.list)
 
         }
         request(e)
@@ -34,24 +41,33 @@ export function Endereco() {
 
 
     const fetchPageData = useCallback(async (pageNumber) => {
-        if (pageNumber !== p) {
-            const response = await api.get(`/endereco?page=${pageNumber}`);
-            setEndereco(response.data);
-            setPage(response.data.paginatin);
-            setP(pageNumber);
+        if (pageNumber) {
+            let nomeEnd = '', bairro = '', numero = '', cidade = '', cep = '', estado = '', nome = ''
+            const response = await api.get(
+                `/endereco/lista/page?nomeEnd=${nomeEnd}&bairro=${bairro}&numero=${numero}&cidade=${cidade}&cep=${cep}&estado=${estado}&name=${nome}&page=${pageNumber}`
+            )
+            setPage(prevState => ({
+                ...prevState,
+                page: prevState.page = pageNumber > qtdPg ? qtdPg : pageNumber
+            }))
+            setEndereco(response.data.list);
+            setRowCountState(response.data.rowCount)
 
         }
-    }, [p]);
+    }, []);
 
 
     const listEndereco = useCallback(() => {
+
         async function request() {
-            const response = await api.get(`/endereco`)
-            setEndereco(response.data)
-            setPage(response.data.paginatin)
+            let nomeEnd = '', bairro = '', numero = '', cidade = '', cep = '', estado = '', nome = ''
+            const response = await api.get(
+                `/endereco/lista/page?nomeEnd=${nomeEnd}&bairro=${bairro}&numero=${numero}&cidade=${cidade}&cep=${cep}&estado=${estado}&name=${nome}&page=${page}`
+            )
 
-
-
+            console.log(response.data)
+            setRowCountState(response.data.rowCount)
+            setEndereco(response.data.list)
         }
         request()
     }, [])
@@ -174,7 +190,7 @@ export function Endereco() {
 
 
                         {
-                            endereco.list?.map(end => (
+                            endereco.map(end => (
                                 <tr key={String(end.id)}>
                                     <td>{end.nomeEnd.toUpperCase()}</td>
                                     <td>{end.bairro.toUpperCase()}</td>
@@ -203,11 +219,11 @@ export function Endereco() {
                     </tbody>
                     <div className="page"
                     >
-                        <button onClick={() => fetchPageData(page.prevPage)}>Prev: {page.prevPage}</button>
+                        <button onClick={() => fetchPageData(Number(page.page) - Number(1))}>Prev</button>
                         <button>Atual: {page.page}</button>
-                        <button onClick={() => fetchPageData(page.nextPage)}>Prox: {page.nextPage}</button>
+                        <button onClick={() => fetchPageData(Number(page.page) + Number(1))}>Prox</button>
                         <button onClick={() => fetchPageData(page.lastPage)}>Ult.: {page.lastPage}</button>
-                        <p>Qtd: {page.countEnd}</p>
+                        <p>Qtd: {rowCountState}</p>
 
                     </div>
                 </table>

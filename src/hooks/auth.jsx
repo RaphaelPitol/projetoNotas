@@ -9,15 +9,17 @@ const AuthContext = createContext({});
 function AuthProvider({ children }) {
   //o useState preserva os dados entre as renderizações
   const [data, setData] = useState({});
-  
-  
+
+
   async function signIn({ email, password }) {
+
     try {
       const response = await api.post("/sessions", { email, password })
-      
+      console.log(response.data)
+
       // data é uma propriedade de axios
       const { user, token } = response.data;
- 
+
       //localStorage armazena os dado no navegador do usuario
       // setItem função do localStorage recebe chave e valor
       // precisa transformar o Objeto vindo atravez do JSON em um texto (.stringify)
@@ -31,15 +33,19 @@ function AuthProvider({ children }) {
 
     } catch (error) {
       if (error.response) {
-        alert(error.response.data.message)
+        Swal.fire({
+            text:error.response.data.message,
+
+        })
+        // alert(error.response.data.message)
       } else {
         alert("Não foi possivel conectar!")
       }
     }
   }
- 
+
   function signOut(navigate) {
-  
+
     Swal.fire({
       text: "Você realmente deseja sair?",
       icon: 'warning',
@@ -54,13 +60,13 @@ function AuthProvider({ children }) {
         localStorage.removeItem("@blocoDeNotas:token");
         localStorage.removeItem("@blocoDeNotas:user");
         setData({});
-      
+
        navigate('/')
-      
+
       }
-     
+
     });
-   
+
   }
 
   async function updateProfile({ user, avatarFile }) {
@@ -79,13 +85,19 @@ function AuthProvider({ children }) {
       localStorage.setItem("@blocoDeNotas:user", JSON.stringify(user));
 
       setData({ user, token: data.token });
-      alert("Perfil atualizado!")
-
+      Swal.fire({
+            text:"Perfil atualizado!"
+        })
     } catch (error) {
       if (error.response) {
-        alert(error.response.data.message)
+        Swal.fire({
+            text:error.response.data.message,
+
+        })
       } else {
-        alert("Não foi possivel atualizar o perfil!")
+        Swal.fire({
+            text:"Não foi possivel atualizar o perfil!"
+        })
       }
     }
   }
@@ -93,14 +105,14 @@ function AuthProvider({ children }) {
   useEffect(() => {
     const token = localStorage.getItem("@blocoDeNotas:token");
     const user = localStorage.getItem("@blocoDeNotas:user");
-  
+
 
     if (token && user) {
       api.defaults.headers.common['Authorization'] = `Bearer ${token}`;
 
       setData({
         token,
-        user: JSON.parse(user)//pegando o JSON em texto voltando atravez do parse um objeto 
+        user: JSON.parse(user)//pegando o JSON em texto voltando atravez do parse um objeto
       });
     }
     //este vetor estando vazio o useEffect aulializa somente uma vez.

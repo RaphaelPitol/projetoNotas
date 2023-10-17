@@ -5,6 +5,7 @@ import { Header } from "../../components/Header";
 import { Table } from "./styles";
 import { useState, useEffect, useCallback } from "react";
 import { api } from "../../service/api";
+import Swal from 'sweetalert2'
 
 export function ListarCars() {
     const [cars, setCars] = useState([])
@@ -25,11 +26,26 @@ export function ListarCars() {
 
     const delet = useCallback((id)=>{
         async function handleRemoveCar(id) {
-            const confirm = window.confirm('Deseja realmente Excluir?')
-            if (confirm) {
-                await api.delete(`/cars/${id}`);
-                listCars()
-            }
+            Swal.fire({
+                text: "Você realmente deseja Excluir?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Sim!',
+                cancelButtonText: 'Não'
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    await api.delete(`/cars/${id}`);
+                    listCars();
+                }
+            });
+
+            // const confirm = window.confirm('Deseja realmente Excluir?')
+            // if (confirm) {
+            //     await api.delete(`/cars/${id}`);
+            //     listCars()
+            // }
         }
         handleRemoveCar(id)
     },[])

@@ -14,7 +14,7 @@ import { useDemoData } from '@mui/x-data-grid-generator';
 import Box from '@mui/material/Box'
 import { DataGrid, GridActionsCellItem, gridClasses } from '@mui/x-data-grid';
 import { useNavigate } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useCallback } from "react";
 import { array } from "yup";
 
@@ -60,28 +60,32 @@ export function Teste() {
 
     const navigate = useNavigate()
     const [rows, setRows] = useState([])
-
     const [rowCountState, setRowCountState] = useState()
 
+    const dadosFiltro = useRef({})
     const [paginationModel, setPaginationModel] = useState({
         page: 0,
         pageSize: 5,
     })
 
+
+
     useEffect(() => {
 
-        handlePagination(paginationModel.page)
-        return
-    }, [])
+        buscaNome(paginationModel.page)
+
+    }, [paginationModel.page])
 
 
     const handlePagination = useCallback((pages) => {
 
         async function handle() {
 
-            const addr = await api.get(`/endereco?page=${pages}`)
+            const addr = await api.get(`/endereco/${pages}`)
 
-            setRowCountState(addr.data.paginatin.countEnd)
+            console.log(addr.data)
+
+            setRowCountState(addr.data.countEnd)
 
             setRows(addr.data.list)
 
@@ -91,23 +95,37 @@ export function Teste() {
     }, [])
 
 
-    const buscaNome = useCallback((e) => {
+    const buscaNome = useCallback((page) => {
 
-        async function request(e) {
-            const response = await api.get(
-                `/endereco/busca?nomeEnd=${e.nomeEnd}&bairro=${e.bairro}&numero=${e.numero}&cidade=${e.cidade}&cep=${e.cep}&estado=${e.estado}&nome=${e.nome}&page=${e.page}`
-            )
-            setRows(response.data)
+
+        async function request() {
+            if(dadosFiltro.current.cep != undefined){
+                const response = await api.get(
+                    `/endereco/lista/page?nomeEnd=${dadosFiltro.current.nomeEnd}&bairro=${dadosFiltro.current.bairro}&numero=${dadosFiltro.current.numero}&cidade=${dadosFiltro.current.cidade}&cep=${dadosFiltro.current.cep}&estado=${dadosFiltro.current.estado}&name=${dadosFiltro.current.nome}&page=${page}`
+                )
+                setRows(response.data.list)
+                setRowCountState(response.data.rowCount)
+            }else{
+                let nomeEnd = '', bairro = '', numero ='', cidade = '', cep='', estado='', nome=''
+                const response = await api.get(
+                    `/endereco/lista/page?nomeEnd=${nomeEnd}&bairro=${bairro}&numero=${numero}&cidade=${cidade}&cep=${cep}&estado=${estado}&name=${nome}&page=${page}`
+                )
+                setRows(response.data.list)
+                setRowCountState(response.data.rowCount)
+
+            }
         }
-        request(e)
+        request()
     }, [])
 
     const listEndereco = useCallback((page) => {
 
         async function request() {
-            const response = await api.get(`/endereco/${page}`)
-            console.log(response.data)
-            setRows(response.data)
+            const response = await api.get(
+                `/endereco/lista/page?nomeEnd=${dadosFiltro.current.nomeEnd}&bairro=${dadosFiltro.current.bairro}&numero=${dadosFiltro.current.numero}&cidade=${dadosFiltro.current.cidade}&cep=${dadosFiltro.current.cep}&estado=${dadosFiltro.current.estado}&name=${dadosFiltro.current.name}&page=${page}`
+            )
+            setRowCountState(response.data.rowCount)
+            setRows(response.data.list)
         }
         request()
     }, [])
@@ -126,12 +144,12 @@ export function Teste() {
             }).then(async (result) => {
                 if (result.isConfirmed) {
                     await api.delete(`/endereco/${id}`);
-                    listEndereco();
+                    buscaNome();
                 }
             });
         }
         removEnd(id);
-    }, [listEndereco]);
+    }, [buscaNome]);
 
     const editEnd = useCallback((id) => {
         async function edit() {
@@ -140,11 +158,11 @@ export function Teste() {
         edit()
     }, [])
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        listEndereco(paginationModel.page)
+    //     buscaNome(paginationModel.page)
 
-    }, [])
+    // }, [])
 
     return (
         <>
@@ -186,7 +204,10 @@ export function Teste() {
 
             <FormBusca>
                 <h3>Busca Personalizada</h3>
-                <form onSubmit={handleSubmit(buscaNome)}>
+                <form onSubmit={ handleSubmit((data)=>{
+                    dadosFiltro.current = data
+                    buscaNome(paginationModel.page)
+                })}>
                     <input type="text" placeholder="Endereço"
                         {...register("nomeEnd")}
                     />
@@ -238,6 +259,9 @@ export function Teste() {
                         rows={rows}
                         columns={columns}
                         initialState={{
+                            pagination: {
+                                paginationModel: { page: 0, pageSize: 5 },
+                            },
 
                         }}
                         pageSizeOptions={[5, 10]}
